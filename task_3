@@ -1,0 +1,109 @@
+#include <iostream>
+#include <cmath>
+#include <stdio.h>
+
+
+using namespace std;
+
+double arr_var[8] = {0}, G = 9.81, real_time, curr_v, curr_h, crit;
+int l = 0;
+// arr_var[0] высота начальная
+// arr_var[1] интервалы считывания
+// arr_var[2] длительность симуляции
+// arr_var[3] полное прошедшее время
+// arr_var[4] остаток скорости
+// arr_var[5] остаток времени 
+// arr_var[6] запасной интервал считывания
+// arr_var[7] реальное время движения для проверки
+
+
+void down(double arr_var[]){
+    double curr_time = 0; // прошедшее в текущем расчёте время
+    curr_time += arr_var[1];
+    int k = 0;
+    real_time = sqrt((2 * arr_var[0])/G);
+    if(real_time < arr_var[1]){
+        arr_var[7] = real_time;
+        return ;
+    }
+    while((arr_var[3] <= arr_var[2]) && (abs(real_time - curr_time) > arr_var[1])){
+        printf("          The ball flies DOWN.");
+        printf(" Time passed %5.4f seconds", arr_var[3]);
+        if((k == 0) || (l == 0)){
+            curr_time = arr_var[5];
+            l++;
+        }
+        curr_v = G * curr_time;
+        curr_h = arr_var[0] - ((G * (curr_time * curr_time)) / 2);
+        printf("   Velocity =%7.3f", curr_v);
+        printf("   High =%7.3f\n", curr_h);
+
+        curr_time += arr_var[1];
+        arr_var[3] += arr_var[1];
+        k++;
+    }
+    arr_var[4] = G * real_time; // начальная скорость для движения вверх
+    arr_var[5] = abs(real_time - curr_time); // остаток времени
+}
+
+void up(double arr_var[]){  
+    double curr_time = 0; // прошедшее в текущем расчёте время
+    curr_time += arr_var[1];
+    int k = 0;
+    arr_var[4] = sqrt(0.7) * arr_var[4];
+    real_time = arr_var[4] / G;
+    if(real_time < arr_var[1]){
+        arr_var[7] = real_time;
+        return ;
+    }
+    while((arr_var[3] <= arr_var[2]) && (abs(real_time - curr_time) > arr_var[1])){
+        if(k == 0){
+            printf("   Touch.\n");
+        }
+        printf("          The ball flies UP.");
+        printf("   Time passed %5.4f seconds", arr_var[3]);
+        if(k == 0){
+        curr_time = arr_var[5];
+        }
+        curr_v = arr_var[4] - G * curr_time;
+        curr_h = (arr_var[4] * curr_time) - (G * (curr_time * curr_time)) / 2;
+        printf("   Velocity =%7.3f", curr_v);
+        printf("   High =%7.3f\n", curr_h);
+
+        curr_time += arr_var[1];
+        arr_var[3] += arr_var[1];
+        k++;
+    }
+    arr_var[0] = (arr_var[4] * arr_var[4])/(2 * G); // возврат высоты подъема
+    arr_var[5] = abs(real_time - curr_time); // остаток времени
+}
+
+int main(){
+    system("cls");
+    int s = 1;
+    printf("   Enter high: ");
+    cin >> arr_var[0];
+    printf("   Enter reading interval time: ");
+    cin >> arr_var[1];
+    arr_var[7] = arr_var[1];
+    printf("   Enter duration of the simulation: ");
+    cin >> arr_var[2];
+    while(arr_var[3] <= arr_var[2]){
+        if(arr_var[7] < arr_var[1]){
+            printf("   Moving time is now less, than reading interval. Try to reduse reading interval.\n");
+            s--;
+            break;
+        }
+        down(arr_var);
+        if(arr_var[7] < arr_var[1]){
+            printf("   Moving time is now less, than reading interval. Try to reduse reading interval.\n");
+            s--;
+            break;
+        }
+        up(arr_var);
+    }
+    if(s != 0){
+        printf("   Simulation time is out.\n");
+    }
+    return 0;
+}
