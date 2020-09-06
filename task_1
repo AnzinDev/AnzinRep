@@ -1,0 +1,38 @@
+#include <iostream>
+
+using namespace std;
+
+int main(){
+    int variant, vars;
+    cout << "   Enter number of method: ";
+    cin >> variant;
+    cout << "   Enter number of variants: ";
+    cin >> vars;
+    switch(variant){
+        case 1:
+            int num_list, fin_var;
+            cout << "   Enter number in list: ";
+            cin >> num_list;
+            cout << "   Your variant is " << ((num_list % vars) + 1) << endl; 
+        break;
+
+        case 2:
+            char name;
+            cout << "   Enter your name: ";
+            cin >> name;
+            cout << "   Your variant is " << ((name % vars) + 1) << endl;
+        break;
+
+        case 3:
+            char surname;
+            cout << "   Enter your surname: ";
+            cin >> surname;
+            cout << "   Your variant is " << ((name % vars) + 1) << endl;
+        break;
+
+        default:
+            cout << "   Error\a" << endl;
+        break;
+    }
+    return 0;
+}
