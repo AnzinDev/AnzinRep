@@ -1,0 +1,50 @@
+#include <iostream>
+
+using namespace std;
+
+int main(){
+    int N, diff, spaces = 0;
+    cout << "   Enter N: ";
+    cin >> N;
+    if(N % 2 == 0){
+        for(int i = 0; i < N; i++){
+            if(i % 2 == 0){
+                cout << "   ";
+                cout << endl;
+            }
+            else{
+                cout << "   ";
+                diff = N - spaces;
+                for(int j = 0; j < (diff/2); j++){
+                    cout << (char) 32; //space ' '
+                }
+                for(int k = 0; k < (i+1); k++){
+                    cout << (char) 42; //star '*'
+                }
+                cout << endl;
+            }
+            spaces++;
+        }
+    }
+    else{
+        for(int i = 0; i < N; i++){
+            if(i % 2 == 1){
+                cout << "   ";
+                cout << endl;
+            }
+            else{
+                cout << "   ";
+                diff = N - spaces;
+                for(int j = 0; j < (diff/2); j++){
+                    cout << (char) 32;
+                }
+                for(int k = 0; k < (i+1); k++){
+                    cout << (char) 42;
+                }
+                cout << endl;
+            }
+            spaces++;
+        }
+    }
+    return 0;
+}
