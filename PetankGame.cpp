@@ -1,3 +1,7 @@
+/*
+предварительная версия программы без обраотки столкновений шариков
+*/
+
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <ctime>
