@@ -64,9 +64,49 @@ int main()
 	countO.setFillColor(Color(206, 93, 34, 255));
 	countO.setStyle(Text::Bold);
 
+	RectangleShape checkplus1(Vector2f(2.f, 2.f));
+	checkplus1.move(425.f, 707.f);
+	checkplus1.setFillColor(Color(255, 255, 255, 255));
+
+	RectangleShape checkplus2(Vector2f(2.f, 2.f));
+	checkplus2.move(475.f, 707.f);
+	checkplus2.setFillColor(Color(255, 255, 255, 255));
+
+	RectangleShape checkplus3(Vector2f(3.f, 3.f));
+	checkplus3.move(449.f, 700.f);
+	checkplus3.setFillColor(Color(255, 255, 255, 255));
+
+	RectangleShape status(Vector2f(190.f, 130.f));
+	status.setFillColor(Color(65, 61, 230, 255));
+	status.setPosition(410.f, 670.f);
+
+	ConvexShape stage;
+	
+
+	RectangleShape mainArea(Vector2f(400.f, lowline));
+	mainArea.setFillColor(Color(47, 137, 54, 224));
+
+	RectangleShape border1(Vector2f(10.f, 790.f));
+	border1.setFillColor(Color(222, 227, 53, 236));
+	border1.setPosition(0.f, 10.f);
+
+	RectangleShape border2(Vector2f(410.f, 10.f));
+	border2.setFillColor(Color(222, 227, 53, 236));
+
+	RectangleShape border3(Vector2f(10.f, 790.f));
+	border3.setFillColor(Color(222, 227, 53, 236));
+	border3.setPosition(400.f, 10.f);
+
+	RectangleShape azimuthLine(Vector2f(50.f, 1.f));
+	azimuthLine.move(450.f, 750.f);
+
+	CircleShape koshonet(8.f, 30);
+	koshonet.setFillColor(Color(255, 219, 88, 255));
+	koshonet.setPosition(192.f, 170.f);
+
 	while (window.isOpen())
 	{
-		Event event;
+		Event event; // очередь обработки событий
 		while (window.pollEvent(event))
 		{
 			if (event.type == Event::Closed)
@@ -92,19 +132,7 @@ int main()
 
 		window.clear(Color(252, 218, 197, 255));
 
-		RectangleShape border1(Vector2f(10.f, 790.f));
-		border1.setFillColor(Color(222, 227, 53, 236));
-		border1.setPosition(0.f, 10.f);
-
-		RectangleShape border2(Vector2f(410.f, 10.f));
-		border2.setFillColor(Color(222, 227, 53, 236));
-
-		RectangleShape border3(Vector2f(10.f, 790.f));
-		border3.setFillColor(Color(222, 227, 53, 236));
-		border3.setPosition(400.f, 10.f);
-
-		RectangleShape azimuthLine(Vector2f(50.f, 1.f));
-		azimuthLine.move(450.f, 750.f);
+		// грницы изменения угла
 		if (azimuth >= 30)
 		{
 			azimuth = 30;
@@ -116,10 +144,7 @@ int main()
 		azimuthLine.setRotation(- 90 - azimuth);
 		azimuthLine.setFillColor(Color(255, 255, 255, 255));
 
-		CircleShape koshonet(8.f, 30);
-		koshonet.setFillColor(Color(255, 219, 88, 255));
-		koshonet.setPosition(192.f, 170.f);
-
+		// границы изменения скорости
 		if (setForce >= 100)
 		{
 			setForce = 100;
@@ -130,6 +155,15 @@ int main()
 		}
 		velocity0 = setForce / 10 + 0.1 * (float)(setForce % 10);
 
+		// установка шкалы силы броска
+		stage.setPointCount(4);
+		stage.setPoint(0, Vector2f(500.f, 780.f));
+		stage.setPoint(1, Vector2f(520.f, 780.f));
+		stage.setPoint(2, Vector2f(520.f, 780.f - setForce));
+		stage.setPoint(3, Vector2f(500.f, 780.f - setForce));
+		stage.setFillColor(Color(255, 32, 32, 255));
+
+		//просчет движения шариков
 		if (player == 0)
 		{
 			if (hit == 1)
@@ -154,7 +188,7 @@ int main()
 					player = 1;
 					step1 = 1;
 				}
-			}
+			} 
 			if ((ball.getPosition().x >= 400.f) || (ball.getPosition().x < -40.f) || (ball.getPosition().y < -40.f))
 			{
 				velocityX = 0;
@@ -205,7 +239,8 @@ int main()
 				step2 = 1;
 			}
 		}
-
+		
+		//подсчет очков и переход на следующий раунд
 		if ((step1 == 1) && (step2 == 1))
 		{
 			if (sqrtf(pow(ball.getPosition().x + ball.getRadius() - koshonet.getPosition().x + koshonet.getRadius(), 2.f) + pow(ball.getPosition().y + ball.getRadius() - koshonet.getPosition().y + koshonet.getRadius(), 2.f)) < sqrtf(pow(ball2.getPosition().x + ball2.getRadius() - koshonet.getPosition().x + koshonet.getRadius(), 2.f) + pow(ball2.getPosition().y + ball2.getRadius() - koshonet.getPosition().y + koshonet.getRadius(), 2.f)))
@@ -250,39 +285,13 @@ int main()
 			winner = 1;
 		}
 
-		RectangleShape checkplus1(Vector2f(2.f, 2.f));
-		checkplus1.move(425.f, 707.f);
-		checkplus1.setFillColor(Color(255, 255, 255, 255));
-
-		RectangleShape checkplus2(Vector2f(2.f, 2.f));
-		checkplus2.move(475.f, 707.f);
-		checkplus2.setFillColor(Color(255, 255, 255, 255));
-
-		RectangleShape checkplus3(Vector2f(3.f, 3.f));
-		checkplus3.move(449.f, 700.f);
-		checkplus3.setFillColor(Color(255, 255, 255, 255));
-
-		RectangleShape status(Vector2f(190.f, 130.f));
-		status.setFillColor(Color(65, 61, 230, 255));
-		status.setPosition(410.f, 670.f);
-
-		ConvexShape stage; 
-		stage.setPointCount(4);
-		stage.setPoint(0, Vector2f(500.f, 780.f));
-		stage.setPoint(1, Vector2f(520.f, 780.f));
-		stage.setPoint(2, Vector2f(520.f, 780.f - setForce));
-		stage.setPoint(3, Vector2f(500.f, 780.f - setForce));
-		stage.setFillColor(Color(255, 32, 32, 255));
-
-		RectangleShape mainArea(Vector2f(400.f, lowline));
-		mainArea.setFillColor(Color(47, 137, 54, 224));
-
 		_itoa_s(azimuthLine.getRotation() - 270, str, 10);
 		txtAngle.setString(str);
 		_itoa_s(setForce, str2, 10);
 		txtForce.setString(str2);
 		txtForce.setPosition(530.f, 773.f - setForce);
 		
+		// отрисовка объектов
 		window.draw(mainArea);
 		window.draw(status);
 		window.draw(border1);
@@ -312,9 +321,12 @@ int main()
 			stop = 0;
 		}
 
+
+		// задержка обновления экрана
 		std::this_thread::sleep_for(std::chrono::milliseconds(16));
 		window.display();
 
+		// обработка закрытия программы
 		if (stop == 0)
 		{
 			std::this_thread::sleep_for(std::chrono::milliseconds(2000));
