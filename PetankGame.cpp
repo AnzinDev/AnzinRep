@@ -21,8 +21,8 @@ int main()
 	RenderWindow window(VideoMode(600, 800), "Petank", Style::Close, settings);
 
 	std::srand(time(NULL));
-	float lowline = 300.f + (float)(std::rand() % 100), setAngle = 0.f, x = 180.f, y = 720.f, addPosX = 0, addPosY = 0, currtime = 0, velocity0 = 0, fulltime, velocityX = 0, S = 0;
-	int angle = 0, setForceMax = 100, stop = 1, setForce = 0, azimuth = 0, count1 = 0, count2 = 0, winner = 0;
+	float lowline = 300.f + (float)(std::rand() % 100), setAngle = 0.f, x = 180.f, y = 720.f, addPosX = 0, addPosY = 0, currtime = 0, velocity0 = 0, velocityX = 0;
+	int angle = 0, stop = 1, setForce = 0, azimuth = 0, count1 = 0, count2 = 0, winner = 0;
 	char str[4], str2[4], str7[3], str8[3];
 	bool hit = 0, ballStop = 0, ballStop2 = 0, player = 0, step1 = 0, step2 = 0;
 
