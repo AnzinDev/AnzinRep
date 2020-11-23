@@ -6,8 +6,6 @@
 
 using namespace std;
 
-
-int i = 0;
 mutex mtx1, mtx2;
 
 void addition(vector<int>& container)
