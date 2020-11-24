@@ -45,7 +45,6 @@ SmartPtr<int> sptr;
 class Image {
 
 	int mx, my;
-	int* data;
 
 public:
 
