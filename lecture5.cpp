@@ -33,11 +33,6 @@ public:
 		cout << "\t#SmartPtr destructor" << endl;
 		delete ptr;
 	}
-
-	T& operator*()
-	{
-		return *ptr;
-	}
 };
 
 SmartPtr<int> sptr;
