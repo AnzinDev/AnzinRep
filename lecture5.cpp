@@ -8,7 +8,7 @@ using namespace std;
 template <typename T>
 class SmartPtr
 {
-	T* ptr;
+	T* ptr = nullptr;
 
 public:
 
@@ -24,14 +24,26 @@ public:
 
 	T& operator[](int i)
 	{
-		
 		return *(ptr + i);
+	}
+
+	T* operator->()
+	{
+		return this->ptr;
 	}
 
 	~SmartPtr()
 	{
 		cout << "\t#SmartPtr destructor" << endl;
-		delete ptr;
+		if (ptr != nullptr)
+		{
+			delete[] ptr;
+		}
+	}
+
+	T& operator*()
+	{
+		return *(this->ptr);
 	}
 };
 
@@ -115,7 +127,7 @@ void Image::putInFile()
 		{
 			Input << sptr[i];
 			p++;
-			if (p == mx) 
+			if (p == mx)
 			{
 				Input << "\n";
 				p = 0;
@@ -144,7 +156,7 @@ int main() {
 	}
 
 	img.show();
-	img.putInFile();
-	
+	//img.putInFile();  //запись в файл (по умолчанию .txt)
+
 	return 0;
 }
