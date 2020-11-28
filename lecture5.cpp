@@ -5,49 +5,103 @@
 
 using namespace std;
 
-template <typename T>
+template <class T>
 class SmartPtr
 {
+private:
 	T* ptr = nullptr;
 
 public:
-
-	SmartPtr()
+	SmartPtr() : ptr(nullptr)
 	{
-		cout << "\t#SmartPtr constructor." << endl;
+
 	}
 
-	void in(T* ptr)
+	void input(T* ptr)
 	{
 		this->ptr = ptr;
 	}
 
-	T& operator[](int i)
-	{
-		return *(ptr + i);
-	}
+	//удаление конструктора копирования и присваивания копированием
+	SmartPtr& operator=(const SmartPtr& obj) = delete;
+	SmartPtr(const SmartPtr& obj) = delete;
 
 	T* operator->()
 	{
 		return this->ptr;
 	}
 
+	T& operator*()
+	{
+		return *(this->ptr);
+	}
+
 	~SmartPtr()
 	{
-		cout << "\t#SmartPtr destructor" << endl;
+		clean();
+	}
+
+	void clean()
+	{
 		if (ptr != nullptr)
-		{
-			delete[] ptr;
-		}
+			delete ptr;
+	}
+};
+
+template <class T>
+class SmartPtr<T[]>
+{
+private:
+	T* ptr = nullptr;
+
+public:
+	SmartPtr() : ptr(nullptr) 
+	{
+
+	}
+
+	void input(T* ptr) 
+	{
+		this->ptr = ptr;
+	}
+
+	//удаление конструктора копирования и присваивания копированием
+	SmartPtr& operator=(const SmartPtr& obj) = delete;
+	SmartPtr(const SmartPtr& obj) = delete; 
+
+	T* operator->() 
+	{
+		return this->ptr;
 	}
 
 	T& operator*()
 	{
 		return *(this->ptr);
 	}
+
+	T& operator[](int index)
+	{
+		if (index < 0)
+		{
+			cerr << "\tIndex bellow zero" << endl;
+			exit(0);
+		}
+		return this->ptr[index];
+	}
+
+	~SmartPtr() 
+	{
+		clean();
+	}
+
+	void clean()
+	{
+		if (ptr != nullptr)
+			delete[] ptr;
+	}
 };
 
-SmartPtr<int> sptr;
+SmartPtr<int[]> sptr;
 
 class Image {
 
@@ -68,7 +122,7 @@ Image::Image(int x, int y)
 {
 	mx = x;
 	my = y;
-	sptr.in(new int[x * y]);
+	sptr.input(new int[x * y]);
 }
 
 int Image::getMx()
@@ -156,7 +210,12 @@ int main() {
 	}
 
 	img.show();
-	//img.putInFile();  //запись в файл (по умолчанию .txt)
+	//img.putInFile();  //запись в файл (по умолчанию .txt)*/
+
+	SmartPtr<int> au;
+	au.input(new int(5));
+
+	cout << *au << endl;
 
 	return 0;
 }
